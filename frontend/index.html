@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Películas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    
+    <header class="container">
+        <h1>Buscador de Películas</h1>
+    </header>
+   
+    <section class="container">
+           
+<div class="card p-3" id="formulario">
+    <form id="formulario-busqueda">
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" class="form-control" required>
+
+        <label for="anio">Año</label>
+        <input type="number" id="anio" class="form-control">
+
+        <button type="submit" class="btn btn-success mt-3">
+            Buscar película
+        </button>
+    </form>
+</div>
+<div id="resultados" class="row mt-4">
+    <!-- Aquí aparecerán las películas -->
+</div>
+    </section>
+
+    
+    <script src="js/buscador.js"></script>
+</body>
+</html>

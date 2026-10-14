@@ -1,0 +1,1 @@
+from controller_pelicula import app
