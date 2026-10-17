@@ -22,7 +22,7 @@ def insertar_comentarios(datos):
     
 
 def mostrar_comentarios(id_pelicula):
-    conexionComentarios = Conexion('SELECT persona, comentario, fecha FROM Comentario WHERE id_pelicula = ?;', (id_pelicula,))
+    conexionComentarios = Conexion('SELECT persona, comentario, fecha, puntuacion FROM Comentario WHERE id_pelicula = ?;', (id_pelicula,))
     respuesta = conexionComentarios.res
     comentarios = formato(respuesta)
     conexionComentarios.conex.close()

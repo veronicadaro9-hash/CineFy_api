@@ -10,27 +10,54 @@ console.log("INICIANDO PETICIÓN DE DETALLES:", url);
 fetch(url)
 .then(response => response.json())
 .then(pelicula => {
-    console.log("DETALLES:", pelicula);
-    let detalle = `
-        <div class="card">
-            <div class="row">
-                <div class="col-md-4">
-                    <img src="${pelicula.Poster}" class="img-fluid">
-                </div>
+  console.log("DETALLES:", pelicula);
+    
+  let detalle = `
+    <div class="card bg-dark text-white border-secondary">
+        <div class="row g-0">
 
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h1>${pelicula.Title}</h1>
-                        <p><strong>Año:</strong> ${pelicula.Year}</p>
-                        <p><strong>Género:</strong> ${pelicula.Genre}</p>
-                        <p><strong>Director:</strong> ${pelicula.Director}</p>
-                        <p><strong>Actores:</strong> ${pelicula.Actors}</p>
-                        <p><strong>Argumento:</strong> ${pelicula.Plot}</p>
-                    </div>
+            <div class="col-md-4">
+                <img src="${pelicula.Poster}"
+                     class="img-fluid rounded-start w-100"
+                     alt="${pelicula.Title}">
+            </div>
+
+            <div class="col-md-8">
+                <div class="card-body p-4">
+
+                    <h1 class="card-title mb-3">
+                        ${pelicula.Title}
+                    </h1>
+
+                    <p class="text-secondary mb-4">
+                        ${pelicula.Year} · ${pelicula.Genre}
+                    </p>
+
+                    <p>
+                        <strong class="text-warning">Director:</strong>
+                        ${pelicula.Director}
+                    </p>
+
+                    <p>
+                        <strong class="text-warning">Reparto:</strong>
+                        ${pelicula.Actors}
+                    </p>
+
+                    <h2 class="fs-5 text-warning mt-4">
+                        Sinopsis
+                    </h2>
+
+                    <p class="lh-lg">
+                        ${pelicula.Plot}
+                    </p>
+
                 </div>
             </div>
+
         </div>
-    `;
+    </div>
+`;
+
 
     document.getElementById("detalle").innerHTML = detalle;
 })
@@ -47,22 +74,43 @@ function mostrarComentarios() {
     .then(data => {
         console.log("COMENTARIOS:", data);
         let listaComentarios = "";
-
-        data.forEach(element => {
-            listaComentarios += `
-                <div class="card mb-2">
-                    <div class="card-body">
-                        <h5>${element.persona}</h5>
-                        <p>${element.comentario}</p>
-                        <small>${element.fecha}</small>
-                    </div>
+         
+data.forEach(element => {
+    const puntuacion = Number(element.puntuacion);
+    const estrellas = [1, 2, 3, 4, 5]
+        .map(numero => numero <= puntuacion ? "★" : "☆")
+        .join("");
+    listaComentarios += `
+        <div class="card bg-black text-white border-secondary mb-3">
+            <div class="card-body">
+                <h5 class="text-warning">
+                    <i class="bi bi-person-circle me-2"></i>
+                    ${element.persona}
+                </h5>
+                <div class="text-warning mb-2">
+                   ${Number.isInteger(puntuacion) && puntuacion >= 1 && puntuacion <= 5
+                   ? `${estrellas} (${puntuacion}/5)`
+                   : "Sin puntuación"}
                 </div>
-            `;
-        });
 
-        document.getElementById("comentarios").innerHTML =
-            listaComentarios;
-    })
+                <p class="mb-2">${element.comentario}</p>
+
+                <small class="text-secondary">
+                    ${element.fecha}
+                </small>
+            </div>
+        </div>
+    `;
+});
+
+document.getElementById("comentarios").innerHTML = listaComentarios;
+})
+
+
+        
+
+
+    
     .catch(error => {
         console.log("Error al cargar los comentarios:", error);
     });
@@ -108,6 +156,16 @@ function agregarComentario(evento) {
     }
     const fecha = document.getElementById("fecha").value.trim();
 
+    const puntuacionSeleccionada =
+    document.querySelector('input[name="puntuacion"]:checked');
+
+    if (!puntuacionSeleccionada) {
+     alert("Selecciona una puntuación");
+    return;
+    }
+
+    const puntuacion = Number(puntuacionSeleccionada.value);
+
     fetch(urlComentarios, {
         method: "POST",
         headers: {
@@ -116,7 +174,8 @@ function agregarComentario(evento) {
         body: JSON.stringify({
             persona: persona,
             comentario: comentario,
-            fecha: fecha
+            fecha: fecha,
+            puntuacion: puntuacion
         })
     })
     .then(response => {

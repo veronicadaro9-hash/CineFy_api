@@ -5,32 +5,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscador de Películas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
-<body>
+<body class="bg-black text-white">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+
+            <a class="navbar-brand fw-bold" href="index.html">
+                <span class="text-warning">Cine</span><span class="text-white">Review</span>
+            </a>
+
+        </div>
+    </nav>
     
-    <header class="container">
-        <h1>Buscador de Películas</h1>
+   
+    <header class="container text-center mt-5 mb-4">
+        <h1 class="display-5 fw-bold text-white">
+            Descubre tu
+            <span class="text-warning">próxima película</span>
+        </h1>
+
+        <p class="lead text-secondary">
+            Busca películas, consulta sus detalles y comparte tu opinión
+        </p>
     </header>
    
     <section class="container">
-           
-<div class="card p-3" id="formulario">
-    <form id="formulario-busqueda">
-        <label for="titulo">Título</label>
-        <input type="text" id="titulo" class="form-control" required>
 
-        <label for="anio">Año</label>
-        <input type="number" id="anio" class="form-control">
+       <!-- Tarjeta gris que contiene buscador y resultados -->    
+      <div class="card bg-dark text-white border-secondary p-3" id="formulario">
 
-        <button type="submit" class="btn btn-success mt-3">
-            Buscar película
-        </button>
-    </form>
-</div>
-<div id="resultados" class="row mt-4">
-    <!-- Aquí aparecerán las películas -->
-</div>
-    </section>
+         <!-- FORMULARIO -->
+        <form id="formulario-busqueda">
+            <div class="row g-3 align-items-end">
+    
+
+              <div class="col-md-7">
+                  <label for="titulo" class="form-label">Título</label>
+                  <input type="text" id="titulo"
+                         class="form-control"
+                         placeholder="Buscar película..." required>
+              </div>
+
+              <div class="col-md-3">
+                   <label for="anio" class="form-label">Año</label>
+                   <input type="number" id="anio"
+                          class="form-control"
+                          placeholder="Ej. 2020">
+              </div>
+
+              <div class="col-md-2">
+                   <button type="submit"
+                           class="btn btn-warning fw-bold w-100">
+                    Buscar
+                   </button>
+              </div>
+
+            </div> <!-- Cierra la fila del buscador -->
+        </form> <!-- Cierra el formulario -->
+     </div> <!-- Cierra la tarjeta gris del buscador -->
+
+        <!-- RESULTADOS FUERA DEL BUSCADOR -->
+          <h2 id="titulo-resultados" class="mt-5 mb-4 d-none">
+            Resultados de búsqueda
+          </h2>
+
+          <div id="resultados" class="row mt-4">
+           <!-- Aquí aparecerán las películas -->
+          </div>
+     
+    </section> <!-- Fin de la sección del buscador -->
+
+
+<!-- CARTELERA DE PELÍCULAS -->
+<section class="container mt-5 mb-5">
+
+    <h2 class="mb-4">
+        <i class="bi bi-film text-warning me-2"></i>
+        El mundo del cine
+    </h2>
+
+    <div class="row g-3">
+
+        <!-- INTERSTELLAR -->
+        <div class="col-md-4">
+            <div class="card bg-dark text-white border-secondary h-100">
+            <a href="pelicula.html?id=tt0816692"></a>
+                <img src="img/interstellar.jpg"
+                     class="card-img-top"
+                     alt="Interstellar">
+            </a>
+                <div class="card-body">
+                    <h5 class="card-title">Interstellar</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- LA LA LAND -->
+        <div class="col-md-4">
+            <div class="card bg-dark text-white border-secondary h-100">
+             <a href="pelicula.html?id=tt3783958"></a>
+                <img src="img/lalaland.jpg"
+                     class="card-img-top"
+                     alt="La La Land">
+             </a>
+                <div class="card-body">
+                    <h5 class="card-title">La La Land</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- EL CABALLERO OSCURO -->
+        <div class="col-md-4">
+            <div class="card bg-dark text-white border-secondary h-100">
+             <a href="pelicula.html?id=tt0468569"></a>
+                <img src="img/batman.jpg"
+                     class="card-img-top"
+                     alt="El caballero oscuro">
+             </a>
+                <div class="card-body">
+                    <h5 class="card-title">El caballero oscuro</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <p class="text-secondary text-center mt-4">
+        Cada película tiene una historia que contar.
+    </p>
+
+</section>
+<!-- FIN DE CARTELERA -->
+
+
+<!-- PIE DE PÁGINA -->
+       
+<footer class="bg-dark text-white text-center py-4 mt-5 border-top border-secondary">
+
+    <div class="container">
+        <h5 class="fw-bold mb-2">
+            <i class="bi bi-film text-warning me-2"></i>
+            <span class="text-warning">Cine</span>Review
+        </h5>
+
+        <p class="text-secondary mb-2">
+            Descubre películas, comparte opiniones y encuentra tu próxima favorita
+        </p>
+
+        <p class="text-secondary small mb-0">
+            &copy; 2026 CineReview. Todos los derechos reservados.
+        </p>
+
+    </div>
+
+</footer>
+<!-- FIN DEL PIE DE PÁGINA -->
 
     
     <script src="js/buscador.js"></script>
