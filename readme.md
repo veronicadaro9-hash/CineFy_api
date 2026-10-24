@@ -112,7 +112,7 @@ Este comando crea la base de datos SQLite `bd_peliculas.db`, si todavía no exis
 Las tablas almacenarán los comentarios y las valoraciones de las películas.
 
 ### 5. Ejecutar el backend
-
+Desde la carpeta backend, con el entorno virtual activado, ejecutar:
 ```bash
 fastapi dev main.py
 ```
