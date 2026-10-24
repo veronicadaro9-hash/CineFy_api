@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from consultas_omdb import *
 from consultas import *
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -17,8 +17,7 @@ app.add_middleware(
 class ModelComentario(BaseModel):
     persona:str
     comentario:str
-    fecha:str
-    puntuacion:int
+    puntuacion:int = Field( ge=1, le=5) # comprueba que la puntuación sea entre 1 y 5
     
 
 @app.get("/peliculas", tags=["Película"])
@@ -39,6 +38,8 @@ def ver_puntuacion(imdb_id: str):
 
 @app.post("/peliculas/{imdb_id}/comentarios", tags=["Comentario"])
 def agregar_comentario(imdb_id: str, body: ModelComentario):
-    datos = (imdb_id, body.persona, body.comentario, body.fecha, body.puntuacion)
-    insertar_comentarios(datos)
-    return {"mensaje": "Comentario agregado correctamente"}
+    datos_comentario= (imdb_id, body.persona, body.comentario)
+    datos_calificacion= (imdb_id, body.persona, body.puntuacion)
+    insertar_comentarios(datos_comentario)
+    insertar_calificacion(datos_calificacion)
+    return {"mensaje": "Reseña agregada correctamente"}

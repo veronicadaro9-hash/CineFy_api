@@ -3,10 +3,10 @@ const imdbId = parametros.get("id");
 
 console.log(imdbId);
 
-const url = `http://127.0.0.1:8000/peliculas/${imdbId}`;
+ const url= `http://127.0.0.1:8000/peliculas/${imdbId}`;
 
 console.log("INICIANDO PETICIÓN DE DETALLES:", url);
-
+// Consulta los detalles de la película en FastAPI
 fetch(url)
 .then(response => response.json())
 .then(pelicula => {
@@ -68,49 +68,36 @@ fetch(url)
 const urlComentarios =
     `http://127.0.0.1:8000/peliculas/${imdbId}/comentarios`;
 
+// Función para mostrar los comentarios de la película
 function mostrarComentarios() {
     fetch(urlComentarios)
     .then(response => response.json())
     .then(data => {
         console.log("COMENTARIOS:", data);
+
         let listaComentarios = "";
-         
-data.forEach(element => {
-    const puntuacion = Number(element.puntuacion);
-    const estrellas = [1, 2, 3, 4, 5]
-        .map(numero => numero <= puntuacion ? "★" : "☆")
-        .join("");
-    listaComentarios += `
-        <div class="card bg-black text-white border-secondary mb-3">
-            <div class="card-body">
-                <h5 class="text-warning">
-                    <i class="bi bi-person-circle me-2"></i>
-                    ${element.persona}
-                </h5>
-                <div class="text-warning mb-2">
-                   ${Number.isInteger(puntuacion) && puntuacion >= 1 && puntuacion <= 5
-                   ? `${estrellas} (${puntuacion}/5)`
-                   : "Sin puntuación"}
+
+        data.forEach(element => {
+            listaComentarios += `
+                <div class="card bg-black text-white border-secondary mb-3">
+                    <div class="card-body">
+                        <h5 class="text-warning">
+                            <i class="bi bi-person-circle me-2"></i>
+                            ${element.persona}
+                        </h5>
+
+                        <p class="mb-2">${element.comentario}</p>
+
+                        <small class="text-secondary">
+                            ${element.fecha}
+                        </small>
+                    </div>
                 </div>
+            `;
+        });
 
-                <p class="mb-2">${element.comentario}</p>
-
-                <small class="text-secondary">
-                    ${element.fecha}
-                </small>
-            </div>
-        </div>
-    `;
-});
-
-document.getElementById("comentarios").innerHTML = listaComentarios;
-})
-
-
-        
-
-
-    
+        document.getElementById("comentarios").innerHTML = listaComentarios;
+    })
     .catch(error => {
         console.log("Error al cargar los comentarios:", error);
     });
@@ -118,9 +105,10 @@ document.getElementById("comentarios").innerHTML = listaComentarios;
 
 mostrarComentarios();
 
+
 const formularioComentario =
     document.getElementById("formulario-comentario");
-
+// Funcion 
 function agregarComentario(evento) {
     // Evita que el formulario se envié de forma automática y recargue la página
     evento.preventDefault();
@@ -154,7 +142,7 @@ function agregarComentario(evento) {
         alert("El comentario debe contener al menos una letra");
         return;
     }
-    const fecha = document.getElementById("fecha").value.trim();
+    
 
     const puntuacionSeleccionada =
     document.querySelector('input[name="puntuacion"]:checked');
@@ -174,7 +162,6 @@ function agregarComentario(evento) {
         body: JSON.stringify({
             persona: persona,
             comentario: comentario,
-            fecha: fecha,
             puntuacion: puntuacion
         })
     })
@@ -185,11 +172,18 @@ function agregarComentario(evento) {
 
         return response.json();
     })
+    
+
+    
     .then(data => {
         alert(data.mensaje);
         formularioComentario.reset();
         mostrarComentarios();
+        mostrarPuntuacion();
     })
+
+
+
     .catch(error => {
         console.log("Error al guardar el comentario:", error);
     });
@@ -199,13 +193,41 @@ function agregarComentario(evento) {
 const urlPuntuacion = `http://127.0.0.1:8000/peliculas/${imdbId}/puntuacion`;
 
 // Obtener la puntuación media de la película
-fetch(urlPuntuacion)
+
+function mostrarPuntuacion() {
+    fetch(urlPuntuacion)
     .then(response => response.json())
     .then(media => {
-        document.getElementById("puntuacion").innerHTML =
-            `<h3>Valoración media: ⭐ ${media ?? "Sin valoraciones"} </h3>`;
+
+        if (media === null) {
+            document.getElementById("puntuacion").innerHTML =
+                "<h3>Sin valoraciones</h3>";
+            return;
+        }
+
+        const puntuacion = Math.round(media);
+
+        const estrellas = [1, 2, 3, 4, 5]
+            .map(numero => numero <= puntuacion ? "★" : "☆")
+            .join("");
+
+        document.getElementById("puntuacion").innerHTML = `
+            <h3>Valoración media</h3>
+            <div class="text-warning fs-3">
+                ${estrellas}
+                <span class="fs-5 text-white">
+                    (${media.toFixed(1)}/5)
+                </span>
+            </div>
+        `;
     })
-    .catch(error => console.log("Error al cargar la puntuación:", error));
+    .catch(error => {
+        console.log("Error al cargar la puntuación:", error);
+    });
+}
+
+mostrarPuntuacion();
+
 
 // Ejecuta la función agregarComentario cuando se envía el formulario
 formularioComentario.addEventListener("submit", agregarComentario);

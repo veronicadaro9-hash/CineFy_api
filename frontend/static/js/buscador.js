@@ -7,10 +7,10 @@ const formulario = document.getElementById("formulario-busqueda");
 function buscarPeliculas(evento) {
     evento.preventDefault();
 
-    const titulo = document.getElementById("titulo").value;
+    const titulo = document.getElementById("titulo").value.trim();
     const anio = document.getElementById("anio").value;
 
-    let urlConsulta = `${url}?titulo=${titulo}`;
+    let urlConsulta = `${url}?titulo=${encodeURIComponent(titulo)}`;
 
     if (anio !== "") {
         urlConsulta += `&año=${anio}`;
@@ -20,6 +20,14 @@ function buscarPeliculas(evento) {
     .then(response => response.json())
     .then(data => {
         let tarjetas = "";
+
+        // Comprobar si se encontraron películas
+        if (!data.Search) {
+            document.getElementById("resultados").innerHTML =
+                `<p class="text-warning">No se encontraron películas.</p>`;
+            return;
+        }
+
 
         data.Search.forEach(pelicula => {
             // Comprobamos si la película tiene póster
@@ -68,6 +76,10 @@ function buscarPeliculas(evento) {
     })
     .catch(error => {
         console.log("Error al buscar las películas:", error);
+
+        // Mostramos un mensaje si no se puede conectar con el servidor
+        document.getElementById("resultados").innerHTML =
+        `<p class="text-danger">No se pudo conectar con el servidor. Inténtalo más tarde.</p>`;
     });
 }
 
